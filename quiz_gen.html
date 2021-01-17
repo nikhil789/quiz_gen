@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		#quest{
+			height: 75px;
+			width:90%;
+			margin:2px 10px;
+			font-family:helvetica;
+			font-size:20px;
+		}
+		.options{
+			width: 400px;
+			height: 30px;
+			font-size:18px;
+		}
+		#prev_container{
+			display: flex;
+			justify-content: space-around;
+		}
+		#preview{
+			height: 300px;
+			width: 40%;
+			background-color: rgb(240,240,240);
+			border: 2px solid black;
+			margin: 10px;
+		}
+		#json{
+			height: 300px;
+			width: 40%;
+			background-color: #0d0c0a;
+			color:white;
+			border: 2px solid black;
+			margin: 10px;
+			overflow:scroll;
+		}
+		#but{
+			display: inline-block;
+			padding: 4px;
+			margin: 5px;
+			border: 1px solid black;
+			background-color: rgb(200, 200, 200);
+			border-radius: 2px;
+		}
+		
+		#download_btn{
+		
+			width:80%;
+			font-size:25px;
+			color:white;
+			background-color:#33adff; 
+			border:none;
+			padding:10px 5px;
+		}
+		
+		#title{
+			width:50%;
+			height:25px;
+			font-size:20px;
+			font-weight:500;
+			margin:10px;
+			padding:5px;
+		}
+		
+		#duration{
+			width:30%;
+			height:25px;
+			font-size:20px;
+			font-weight:500;
+			margin:10px;
+			padding:5px;
+		}
+		
+		#form_container{
+		
+			display: flex;
+			justify-content: space-around;
+		
+		}
+		
+		#form1{
+			border:1px solid black;
+			border-radius:5px;
+			width:40%;
+			padding:10px;
+		}
+		
+		#form2{
+		
+			border:1px solid black;
+			border-radius:5px;
+			width:40%;
+			padding:10px;
+		
+		}
+		
+		#head_stmt, #foot_stmt{
+		
+			width:90%;
+			height:30px;
+			padding:5px;
+			font-size:20px;
+			margin-bottom:10px;
+		
+		}
+		
+		.add_btn_msq{
+		
+			width:30px;
+			height:30px;
+			font-size:20px;
+			padding:0;
+			border:none;
+		
+		}
+		
+		.del_btn_msq{
+		
+			font-size:15px;
+			width:20px;
+			height:20px;
+			border-radius:2px;
+			padding:0px;
+			border:none;
+		}
+		
+		.new_stmt{
+		
+			display:flex;
+			align-items:center;
+			margin-bottom:10px;
+		}
+		
+		.new_stmt textarea{
+		
+			width:400px;
+			font-size:16px;
+			padding:10px 10px;
+			resize:vertical;
+			overflow:auto;
+			letter-spacing:2px;
+			line-height: 1.6;
+			font-family:helvetica;
+		}
+		
+	</style>
+</head>
+<body>
+
+	<input id="title" type="text" placeholder="Quiz Title"></input><br>
+	<input id="duration" type="text" placeholder="Quiz Duration"></input>
+
+	
+	<div id="form_container">
+		<div id="form1">
+			<textarea id="quest" placeholder="Question statement" required></textarea>
+			<br>
+			<br>
+			<label> A)</label>
+			<input type="text" class="options A" required>
+			<input type="radio" name="sol" class="A radio">
+			<br>
+			<br>
+			<label> B)</label>
+			<input type="text" class="options B" required>
+			<input type="radio" name="sol" class="B radio">
+			<br>
+			<br>
+			<label> C)</label>
+			<input type="text" class="options C" required>
+			<input type="radio" name="sol" class="C radio">
+			<br>
+			<br>
+			<label> D)</label>
+			<input type="text" class="options D" required>
+			<input type="radio" name="sol" class="D radio">
+			<br><br>
+			<label for="sol">Answer</label>
+			<input id="sol" type="text" class="options" disabled>
+			<br>
+			<div id="but" onclick="set_question('dtq')">SET QUESTION</div>
+		</div>
+	
+		<div id="form2">
+			<input id="head_stmt" placeholder="Head Statement" required></input>
+		
+			<div id="stmts_msq">
+		
+				<button class="add_btn_msq" onclick="add_stmt()">+</button>
+			
+				<div class="new_stmt">
+					<button class="del_btn_msq" style="background-color:red;color:white;" onclick="del_stmt(this)">X</button>
+					<textarea class="msq_stmt" placeholder="statement"></textarea>
+				</div>
+			
+				<div class="new_stmt">
+					<button class="del_btn_msq" style="background-color:red;color:white;" onclick="del_stmt(this)">X</button>
+					<textarea class="msq_stmt" placeholder="statement"></textarea>
+				</div>
+			</div>
+		
+			<input id="foot_stmt" placeholder="Foot statement"></input> <br>
+		
+			<label> A)</label>
+			<input type="text" class="options A_msq" required>
+			<input type="radio" name="sol" class="A_msq radio_msq">
+			<br>
+			<br>
+			<label> B)</label>
+			<input type="text" class="options B_msq" required>
+			<input type="radio" name="sol" class="B_msq radio_msq">
+			<br>
+			<br>
+			<label> C)</label>
+			<input type="text" class="options C_msq" required>
+			<input type="radio" name="sol" class="C_msq radio_msq">
+			<br>
+			<br>
+			<label> D)</label>
+			<input type="text" class="options D_msq" required>
+			<input type="radio" name="sol" class="D_msq radio_msq">
+			<br><br>
+			<label for="sol_msq">Answer</label>
+			<input id="sol_msq" type="text" class="options" disabled>
+			<br>
+			<div id="but" onclick="set_question('msq')">SET QUESTION</div>
+		</div>
+	</div>
+	<div id="prev_container">
+		<div id="preview"></div>
+		<pre id="json"></pre>
+	</div>
+	
+	<div style="text-align:center;"><button id="download_btn" onclick="download()">Download</button></div>
+
+</body>
+<script>
+
+	var DATA = {
+						"title" : "",
+						"duration": "",
+						"questions":[]
+					};
+					
+	var radio = document.getElementsByClassName("radio");
+	for(let i of radio)
+	{
+		i.addEventListener("click", function(){
+			var cls = i.getAttribute("class").split(' ');
+			var ans = document.getElementsByClassName("options "+ cls[0]);
+			document.getElementById('sol').value = ans[0].value;
+		});
+	}
+	
+	var radio = document.getElementsByClassName("radio_msq");
+	for(let i of radio)
+	{
+		i.addEventListener("click", function(){
+			var cls = i.getAttribute("class").split(' ');
+			var ans = document.getElementsByClassName("options "+ cls[0]);
+			document.getElementById('sol_msq').value = ans[0].value;
+		});
+	}
+	
+	function set_question(type) {
+		generate_preview(type);
+		generate_JSON(type);
+	}
+	
+	function generate_preview(type) {
+		
+		var pre = document.getElementById('preview');
+		
+		var option_a = document.createElement('p');
+		var option_b = document.createElement('p');
+		var option_c = document.createElement('p');
+		var option_d = document.createElement('p');
+		var correct_opt = document.createElement('h4');
+		
+		var QUESTION = {};
+		
+		if(type == 'dtq') {
+		
+			var quest_name = document.createElement('h3');
+		
+			quest_name.innerHTML = document.getElementById('quest').value;
+			
+			option_a.innerHTML = "A) " + document.getElementsByClassName('options A')[0].value;
+			option_b.innerHTML = "B) " +document.getElementsByClassName('options B')[0].value;
+			option_c.innerHTML = "C) " + document.getElementsByClassName('options C')[0].value;
+			option_d.innerHTML = "D) " + document.getElementsByClassName('options D')[0].value;
+			
+			correct_opt.innerHTML = document.getElementById('sol').value;
+
+			QUESTION = {
+				"type" : "dtq",
+				"stmt" : quest_name.innerHTML,
+				"options": [
+							 document.getElementsByClassName('options A')[0].value,
+							 document.getElementsByClassName('options B')[0].value,
+							 document.getElementsByClassName('options C')[0].value,
+							 document.getElementsByClassName('options D')[0].value
+							],
+				"correct": correct_opt.innerHTML
+
+			};
+		
+			console.log("QUESTIONS set is ", DATA);
+			pre.innerHTML = '';
+			pre.append(quest_name);
+		}
+		
+		else if(type == 'msq') {
+		
+			var stmt_arr = document.getElementsByClassName("msq_stmt");
+			var stmts = [];
+			
+			for(var i = 0; i < stmt_arr.length; i++){ stmts.push(stmt_arr[i].value)}
+		
+			QUESTION = {
+				"type" : "msq",
+				"head_stmt" : document.getElementById("head_stmt").value,
+				"stmts" : stmts,
+				"foot_stmt" : document.getElementById("foot_stmt").value,
+				"options": [
+							 document.getElementsByClassName('options A_msq')[0].value,
+							 document.getElementsByClassName('options B_msq')[0].value,
+							 document.getElementsByClassName('options C_msq')[0].value,
+							 document.getElementsByClassName('options D_msq')[0].value
+							],
+				"correct": document.getElementById('sol_msq').value
+
+			};
+			
+			// preview preparation
+			
+			var head_stmt = document.createElement("p");
+			head_stmt.innerHTML = QUESTION["head_stmt"];
+			
+			var tbl = document.createElement("table");
+			
+			for(i = 0; i < stmts.length; i++){
+				
+				var row = document.createElement("tr");
+				var col1 = document.createElement("td");
+				col1.style.verticalAlign = "top";
+				
+				var col2 = document.createElement("td");
+				
+				col1.innerHTML = (i + 1) + ".";
+				col2.innerHTML = stmts[i];
+				
+				row.append(col1);
+				row.append(col2);
+				
+				tbl.append(row);
+			}
+			
+			pre.innerHTML = '';
+			pre.append(head_stmt);
+			pre.append(tbl);
+			
+			if(QUESTION["foot_stmt"]){
+	
+				var foot_stmt = document.createElement("p");
+				foot_stmt.innerHTML = QUESTION["foot_stmt"];
+		
+				pre.append(foot_stmt);
+			}
+			
+			option_a.innerHTML = "A) " + QUESTION["options"][0];
+			option_b.innerHTML = "B) " + QUESTION["options"][1];
+			option_c.innerHTML = "C) " + QUESTION["options"][2];
+			option_d.innerHTML = "D) " + QUESTION["options"][3];
+			correct_opt.innerHTML = QUESTION["correct"]
+		}
+		
+		else {
+			alert("Unknown format !");
+		}
+		
+		pre.append(option_a);
+		pre.append(option_b);
+		pre.append(option_c);
+		pre.append(option_d);
+		pre.append(correct_opt);
+		
+		DATA['questions'].push(QUESTION);
+	}
+	
+	function generate_JSON() {
+	
+		var js = document.getElementById('json');
+		js.innerHTML = JSON.stringify(DATA, null, 4);
+	
+	}
+	
+	// MSQ functions
+	
+	function add_stmt() {
+		
+		var stmts_msq = document.getElementById("stmts_msq");
+		
+		const html_string = '<div class="new_stmt"><button class="del_btn_msq" style="background-color:red;color:white;" onclick="del_stmt(this)">X</button><textarea class="msq_stmt" placeholder="statement"></textarea></div>';
+		
+		stmts_msq.innerHTML += html_string;
+	
+	}
+	
+	function del_stmt(obj){
+	
+		obj.parentNode.remove();
+	
+	}
+
+	function download(){
+		
+		// setting Quiz title and duration
+		
+		DATA['title'] = document.getElementById("title").value;
+		DATA['duration'] = document.getElementById("duration").value;
+		
+		var file_name = DATA['title'];
+				
+		if(file_name == '') {
+			alert('Please provide the paper name to download the code.')
+		}
+		else {
+			//var json_string = document.getElementById('display_json').innerHTML;
+			
+			file_name = file_name.replace(/ /g, "_");
+		
+			//download(file_name.toLowerCase() + ".json", json_string);
+			
+			var text = "var DATA = " + JSON.stringify(DATA, null, 4);
+		
+			/*for(var i = 0; i < DATA["questions"].length; i++)
+			{
+				let q = DATA["questions"][i];
+				let j = JSON.stringify(q, null, 4);
+				text += j;
+				text +=  ',' + "\n" + "\n";
+			}
+			text = text.substr(0, text.length - 3);*/
+		
+			var download_link = document.createElement('a');
+			download_link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+
+			download_link.setAttribute('download', file_name.toLowerCase() + ".js");
+
+			download_link.style.display = 'none';
+			document.body.appendChild(download_link);
+
+			download_link.click();
+
+			document.body.removeChild(download_link);
+		}
+	
+		
+	}
+
+</script>
+</html>
