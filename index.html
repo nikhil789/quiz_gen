@@ -265,25 +265,6 @@
 	function set_question(type) {
 		generate_preview(type);
 		generate_JSON(type);
-		refresh_form(type);
-	}
-	
-	function refresh_form(type) {
-		
-		if(type == 'dtq') {
-			var form1 = document.getElementById("form1");
-			form1.innerHTML = form1.innerHTML;
-		}
-		
-		else if(type == 'msq') {
-			var form2 = document.getElementById("form2");
-			form2.innerHTML = form2.innerHTML;
-		}
-		
-		else {
-			alert("Unknown format!");
-		}
-		
 	}
 	
 	function generate_preview(type) {
